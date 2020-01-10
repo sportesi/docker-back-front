@@ -1,0 +1,29 @@
+version: '3'
+
+services: 
+    frontend:
+        build: ./frontend
+        ports:
+            - 80:8080
+        volumes: 
+            - ./frontend:/home/node
+        working_dir: /home/node
+        command: ['npm', 'run', 'serve']
+    
+    backend:
+        build: ./backend
+        ports:
+            - 88:80
+        volumes: 
+            - ./backend:/var/www/html
+            - ./vhost.conf:/etc/apache2/sites-available/000-default.conf
+    
+    postgres:
+        image: postgres:alpine
+        ports:
+            - 5432:5432
+        environment: 
+            POSTGRES_PASSWORD: homestead
+            POSTGRES_USER: homestead
+            POSTGRES_DB: homestead
+        
